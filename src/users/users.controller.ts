@@ -29,6 +29,7 @@ export class UsersController {
   @Post()
   async createUsers(@Body() data: UsersDTO) {
     const user = await this.usersService.create(data);
+    console.log(user);
     return {
       statusCode: HttpStatus.OK,
       message: 'User created successfully',

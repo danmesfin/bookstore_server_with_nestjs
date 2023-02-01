@@ -9,6 +9,6 @@ const config: DataSourceOptions = {
   database: 'bookstore',
   synchronize: false,
   logging: true,
-  entities: ['src//*.entity.ts', 'dist//*entity.ts'],
+  entities: ['dist/**/*.entity.js'],
 };
 export default config;
