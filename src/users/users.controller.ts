@@ -10,11 +10,13 @@ import {
 } from '@nestjs/common';
 
 import { UsersService } from './users.service';
-import { UsersDTO } from './users.dto';
+import { UsersDTO, LoginDTO } from './users.dto';
+import * as bcrypt from 'bcrypt';
+import { AuthService } from './user.auth.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private usersService: UsersService) {}
+  constructor(private usersService: UsersService, private authService: AuthService) {}
 
   @Get()
   async showAllUsers() {
@@ -26,15 +28,60 @@ export class UsersController {
     };
   }
 
-  @Post()
-  async createUsers(@Body() data: UsersDTO) {
-    const user = await this.usersService.create(data);
-    console.log(user);
-    return {
-      statusCode: HttpStatus.OK,
-      message: 'User created successfully',
-      user,
-    };
+  @Post("register")
+  async registerUser(@Body() data: UsersDTO) {
+    const {name, email, password} = data;
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const formData = {name: name, email: email, password: hashedPassword}
+
+    const user = await this.usersService.findByEmail(email);
+
+    if(user){
+      return {
+        statusCode: HttpStatus.BAD_REQUEST,
+        message: "User Already exists"
+      }
+    } else{
+      const user = await this.usersService.create(formData);
+
+      const payload = {
+        email: user.email
+      }
+
+      const token = await this.authService.signPayload(payload);
+
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'User created successfully',
+        token,
+        user,
+      };
+    }
+  }
+
+  @Post("login")
+  async loginUser(@Body() data: any) {
+    const {email, password} = data;
+
+    const user = await (await this.usersService.findByEmail(email));
+
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if(passwordMatch){
+
+      const payload = {
+        email: user.email
+      }
+
+      const token = await this.authService.signPayload(payload);
+        return {
+          statusCode: HttpStatus.OK,
+          token,
+          user,
+        };
+    }
   }
 
   @Get(':id')
@@ -48,7 +95,7 @@ export class UsersController {
   }
 
   @Patch(':id')
-  async uppdateUser(@Param('id') id: number, @Body() data: Partial<UsersDTO>) {
+  async updateUser(@Param('id') id: number, @Body() data: Partial<UsersDTO>) {
     await this.usersService.update(id, data);
     return {
       statusCode: HttpStatus.OK,
