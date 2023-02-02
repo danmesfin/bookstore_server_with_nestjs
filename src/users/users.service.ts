@@ -7,6 +7,8 @@ import { Repository } from 'typeorm';
 
 import { UsersEntity } from './users.entity';
 import { UsersDTO } from './users.dto';
+import { RegisterUserDTO } from './dto/register-user.dto';
+import { LoginUserDTO } from './dto/login-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -27,6 +29,14 @@ export class UsersService {
     await this.usersRepository.save(data);
     return user;
   }
+
+  async createUser(data: RegisterUserDTO) {
+    const user = this.usersRepository.create(data);
+    await this.usersRepository.save(data);
+    return user;
+  }
+
+
 
   async findByEmail(email: string): Promise<UsersDTO> {
     return await this.usersRepository.findOne({
