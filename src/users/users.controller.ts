@@ -10,7 +10,9 @@ import {
 } from '@nestjs/common';
 
 import { UsersService } from './users.service';
-import { UsersDTO, LoginDTO } from './users.dto';
+import { UsersDTO } from './users.dto';
+import { RegisterUserDTO } from './dto/register-user.dto';
+import { LoginUserDTO } from './dto/login-user.dto';
 import * as bcrypt from 'bcrypt';
 import { AuthService } from './user.auth.service';
 
@@ -29,15 +31,13 @@ export class UsersController {
   }
 
   @Post("register")
-  async registerUser(@Body() data: UsersDTO) {
+  async registerUser(@Body() data: RegisterUserDTO) {
+
     const {name, email, password} = data;
-
     const hashedPassword = await bcrypt.hash(password, 10);
-
     const formData = {name: name, email: email, password: hashedPassword}
-
     const user = await this.usersService.findByEmail(email);
-
+    
     if(user){
       return {
         statusCode: HttpStatus.BAD_REQUEST,
@@ -62,7 +62,8 @@ export class UsersController {
   }
 
   @Post("login")
-  async loginUser(@Body() data: any) {
+  async loginUser(@Body() data: LoginUserDTO) {
+
     const {email, password} = data;
 
     const user = await (await this.usersService.findByEmail(email));

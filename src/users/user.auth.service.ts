@@ -1,6 +1,7 @@
 import {Injectable} from '@nestjs/common';
 import {sign} from 'jsonwebtoken';
 import { UsersService } from './users.service';
+import jwt_decode from "jwt-decode";
 
 export class AuthService{
     constructor(private usersService: UsersService) {}
@@ -11,5 +12,14 @@ export class AuthService{
     }
     async validateUser(payload: any) {
         return await this.usersService.findByEmail(payload);
+    }
+
+    async decodeJwt(token: any) {
+        const decoded: any = jwt_decode(token);
+
+        return decoded;
+
+        console.log(decoded, "JWT TOKEN DECODE");
+        // return awai
     }
 }
