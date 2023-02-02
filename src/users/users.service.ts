@@ -10,6 +10,9 @@ import { UsersDTO } from './users.dto';
 
 @Injectable()
 export class UsersService {
+  findByLogin(email: any) {
+    throw new Error('Method not implemented.');
+  }
   constructor(
     @InjectRepository(UsersEntity)
     private usersRepository: Repository<UsersEntity>,
