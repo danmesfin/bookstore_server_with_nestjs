@@ -2,9 +2,8 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Books {
-  @PrimaryGeneratedColumn('uuid')
-  book_id: string;
-
+  @PrimaryGeneratedColumn()
+  id: string;
   @Column({ type: 'varchar', length: 255, nullable: false })
   title: string;
 
@@ -25,7 +24,4 @@ export class Books {
 
   @Column({ type: 'varchar', length: 255, nullable: false })
   img_url: string;
-
-  @Column({ type: 'varchar', length: 255, nullable: false })
-  buy_url: string;
 }

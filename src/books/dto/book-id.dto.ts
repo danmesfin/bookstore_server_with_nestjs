@@ -1,5 +1,5 @@
 export class BookIdDto {
-  readonly book_id: string;
+  id: string;
   readonly title: string;
   readonly genre: string;
   readonly description: string;
