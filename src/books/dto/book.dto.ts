@@ -5,12 +5,14 @@ export class BookDto {
   readonly author: string;
   readonly publisher: string;
   readonly pages: string;
-  readonly img_url: string;
+  img_url: string;
+  readonly year: string;
+  readonly status: boolean;
 }
 
 /*
 CREATE TABLE books (
-    ID int NOT NULL,
+    ID int NOT NULL AUTO_INCREMENT,
       title varchar(255),
   genre varchar(255),
    description varchar(255),
@@ -18,6 +20,23 @@ CREATE TABLE books (
    publisher varchar(255),
   pages varchar(255),
   img_url varchar(255),
+  year varchar(255),
+  status boolean,
     PRIMARY KEY (ID)
 );
+
+
+{
+    "title": "Self to Lose, Self to Find",
+    "genre": "Spiritual",
+    "description": "About losing one's self to find ourselves in Christ",
+    "author": "Jimmy",
+    "publisher": "Made with Love",
+    "pages": "200",
+    "img_url": null
+    "year": "1239"
+    "status": true
+}
+
+
 */
