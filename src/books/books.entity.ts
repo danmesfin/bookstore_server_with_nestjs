@@ -24,4 +24,10 @@ export class Books {
 
   @Column({ type: 'varchar', length: 255, nullable: false })
   img_url: string;
+
+  @Column({ type: 'varchar', length: 255, nullable: false })
+  year: string;
+
+  @Column()
+  status: boolean;
 }
