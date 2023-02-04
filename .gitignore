@@ -3,6 +3,8 @@
 /node_modules
 /public/image
 
+public
+
 # Logs
 logs
 *.log

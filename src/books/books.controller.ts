@@ -27,11 +27,8 @@ import { BookIdDto } from './dto/book-id.dto';
 import { AuthService } from 'src/users/user.auth.service';
 import { UsersService } from 'src/users/users.service';
 
-<<<<<<< HEAD
 let newFileName = '';
 
-=======
->>>>>>> 51e19258230a966eda050bc459bbeb6cdf4084e5
 export const multerConfig = {
   dest: './public/images',
 };
@@ -65,13 +62,8 @@ export const multerOptions = {
       cb(null, uploadPath);
     },
     filename: (req: any, file: any, cb: any) => {
-<<<<<<< HEAD
       newFileName = `${uuid()}${extname(file.originalname)}`;
       cb(null, newFileName);
-=======
-      fileName = `${uuid()}${extname(file.originalname)}`
-      cb(null, fileName);
->>>>>>> 51e19258230a966eda050bc459bbeb6cdf4084e5
     },
   }),
 };
@@ -102,7 +94,8 @@ export class BooksController {
     @UploadedFile() file,
   ): Promise<BookDto | any> {
     const header = req.headers.authorization;
-    console.log(file);
+
+    console.log(book);
     if (!header) {
       return {
         statusCode: HttpStatus.BAD_REQUEST,
@@ -120,13 +113,8 @@ export class BooksController {
       );
 
       if (user) {
-<<<<<<< HEAD
         book.img_url = newFileName;
         console.log(book);
-=======
-        book.img_url = fileName;
-        console.log(book)
->>>>>>> 51e19258230a966eda050bc459bbeb6cdf4084e5
         return (await this.booksService.insert(book)) as BookDto;
       } else {
         return {
@@ -143,10 +131,12 @@ export class BooksController {
   }
 
   @Put(':id')
+  @UseInterceptors(FileInterceptor('file', multerOptions))
   async update(
     @Request() req: any,
     @Body() updatedBook: BookDto,
     @Param() params,
+    @UploadedFile() file,
   ): Promise<BookIdDto | any> {
     const header = req.headers.authorization;
 
@@ -168,6 +158,7 @@ export class BooksController {
 
       if (user) {
         const oldBook = await this.booksService.findById(params.id);
+        updatedBook.img_url = newFileName;
         return await this.booksService.update(oldBook, updatedBook);
       } else {
         return {
@@ -217,7 +208,5 @@ export class BooksController {
         message: 'Not Authorized',
       };
     }
-
-    return await this.booksService.delete(params.id);
   }
 }
