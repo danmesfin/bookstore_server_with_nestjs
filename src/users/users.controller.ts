@@ -18,7 +18,10 @@ import { AuthService } from './user.auth.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private usersService: UsersService, private authService: AuthService) {}
+  constructor(
+    private usersService: UsersService,
+    private authService: AuthService,
+  ) {}
 
   @Get()
   async showAllUsers() {
@@ -30,25 +33,24 @@ export class UsersController {
     };
   }
 
-  @Post("register")
+  @Post('register')
   async registerUser(@Body() data: RegisterUserDTO) {
-
-    const {name, email, password} = data;
+    const { name, email, password } = data;
     const hashedPassword = await bcrypt.hash(password, 10);
-    const formData = {name: name, email: email, password: hashedPassword}
+    const formData = { name: name, email: email, password: hashedPassword };
     const user = await this.usersService.findByEmail(email);
-    
-    if(user){
+
+    if (user) {
       return {
         statusCode: HttpStatus.BAD_REQUEST,
-        message: "User Already exists"
-      }
-    } else{
+        message: 'User Already exists',
+      };
+    } else {
       const user = await this.usersService.create(formData);
 
       const payload = {
-        email: user.email
-      }
+        email: user.email,
+      };
 
       const token = await this.authService.signPayload(payload);
 
@@ -61,27 +63,25 @@ export class UsersController {
     }
   }
 
-  @Post("login")
+  @Post('login')
   async loginUser(@Body() data: LoginUserDTO) {
+    const { email, password } = data;
 
-    const {email, password} = data;
-
-    const user = await (await this.usersService.findByEmail(email));
+    const user = await await this.usersService.findByEmail(email);
 
     const passwordMatch = await bcrypt.compare(password, user.password);
 
-    if(passwordMatch){
-
+    if (passwordMatch) {
       const payload = {
-        email: user.email
-      }
+        email: user.email,
+      };
 
       const token = await this.authService.signPayload(payload);
-        return {
-          statusCode: HttpStatus.OK,
-          token,
-          user,
-        };
+      return {
+        statusCode: HttpStatus.OK,
+        token,
+        user,
+      };
     }
   }
 
