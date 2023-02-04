@@ -6,7 +6,6 @@ import {
   Post,
   Put,
   Delete,
-  UseGuards,
   Request,
   HttpStatus,
   HttpException,
@@ -27,12 +26,11 @@ import { BookIdDto } from './dto/book-id.dto';
 import { AuthService } from 'src/users/user.auth.service';
 import { UsersService } from 'src/users/users.service';
 
-
-
-
 export const multerConfig = {
   dest: './public/images',
 };
+
+let fileName="";
 
 export const multerOptions = {
   limits: {
@@ -61,7 +59,8 @@ export const multerOptions = {
       cb(null, uploadPath);
     },
     filename: (req: any, file: any, cb: any) => {
-      cb(null, `${uuid()}${extname(file.originalname)}`);
+      fileName = `${uuid()}${extname(file.originalname)}`
+      cb(null, fileName);
     },
   }),
 };
@@ -84,13 +83,6 @@ export class BooksController {
   async findOneById(@Param() params): Promise<BookIdDto> {
     return await this.booksService.findById(params.id);
   }
-
-  // @Post('upload')
-  // @UseInterceptors(FileInterceptor('file', multerOptions))
-  // async upload(@UploadedFile() file) {
-  //   console.log("Hello")
-  //   console.log(file);
-  // }
 
   @Post()
   @UseInterceptors(FileInterceptor('file', multerOptions))
@@ -118,7 +110,7 @@ export class BooksController {
       );
 
       if (user) {
-        book.img_url = file.originalname;
+        book.img_url = fileName;
         console.log(book)
         return (await this.booksService.insert(book)) as BookDto;
       } else {

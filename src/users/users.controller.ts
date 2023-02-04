@@ -66,9 +66,13 @@ export class UsersController {
 
     const {email, password} = data;
 
+    console.log(data, "data");
+
     const user = await (await this.usersService.findByEmail(email));
 
+    console.log("Before Comparing")
     const passwordMatch = await bcrypt.compare(password, user.password);
+    console.log("After Comparing")
 
     if(passwordMatch){
 
