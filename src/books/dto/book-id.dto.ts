@@ -9,5 +9,5 @@ export class BookIdDto {
   readonly price: string;
   readonly img_url: string;
   readonly year: string;
-  readonly status: boolean;
+  readonly status: string;
 }

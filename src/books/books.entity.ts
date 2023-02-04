@@ -32,5 +32,5 @@ export class Books {
   year: string;
 
   @Column({ type: 'varchar', length: 255, nullable: false })
-  status: boolean;
+  status: string;
 }
