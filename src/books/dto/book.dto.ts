@@ -5,25 +5,26 @@ export class BookDto {
   readonly author: string;
   readonly publisher: string;
   readonly pages: string;
+  readonly price: string;
   img_url: string;
   readonly year: string;
   readonly status: boolean;
 }
 
 /*
-CREATE TABLE books (
-    ID int NOT NULL AUTO_INCREMENT,
+CREATE TABLE users (
+      ID int NOT NULL AUTO_INCREMENT,
       title varchar(255),
-  genre varchar(255),
-   description varchar(255),
-  author varchar(255),
-   publisher varchar(255),
-  pages varchar(255),
-  img_url varchar(255),
-  year varchar(255),
-  status boolean,
-    PRIMARY KEY (ID)
-);
+      genre varchar(255),
+      description varchar(255),
+      author varchar(255),
+      publisher varchar(255),
+      pages varchar(255),
+      img_url varchar(255),
+      year varchar(255),
+      status boolean,
+      PRIMARY KEY (ID)
+ );
 
 
 {

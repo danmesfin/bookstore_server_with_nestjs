@@ -23,11 +23,14 @@ export class Books {
   pages: string;
 
   @Column({ type: 'varchar', length: 255, nullable: false })
+  price: string;
+
+  @Column({ type: 'varchar', length: 255, nullable: false })
   img_url: string;
 
   @Column({ type: 'varchar', length: 255, nullable: false })
   year: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 255, nullable: false })
   status: boolean;
 }

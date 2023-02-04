@@ -10,9 +10,10 @@ import {
   Request,
   HttpStatus,
   HttpException,
-  UseInterceptors, UploadedFile
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
-import { FileInterceptor } from "@nestjs/platform-express";
+import { FileInterceptor } from '@nestjs/platform-express';
 
 import { extname } from 'path';
 import { existsSync, mkdirSync } from 'fs';
@@ -27,8 +28,7 @@ import { BookIdDto } from './dto/book-id.dto';
 import { AuthService } from 'src/users/user.auth.service';
 import { UsersService } from 'src/users/users.service';
 
-
-
+let newFileName = '';
 
 export const multerConfig = {
   dest: './public/images',
@@ -61,7 +61,8 @@ export const multerOptions = {
       cb(null, uploadPath);
     },
     filename: (req: any, file: any, cb: any) => {
-      cb(null, `${uuid()}${extname(file.originalname)}`);
+      newFileName = `${uuid()}${extname(file.originalname)}`;
+      cb(null, newFileName);
     },
   }),
 };
@@ -73,7 +74,6 @@ export class BooksController {
     private authService: AuthService,
     private usersService: UsersService,
   ) {}
-
 
   @Get()
   async findAll(@Request() req): Promise<BookIdDto[]> {
@@ -97,7 +97,7 @@ export class BooksController {
   async create(
     @Request() req: any,
     @Body() book: BookDto,
-    @UploadedFile() file
+    @UploadedFile() file,
   ): Promise<BookDto | any> {
     const header = req.headers.authorization;
     console.log(file);
@@ -118,8 +118,8 @@ export class BooksController {
       );
 
       if (user) {
-        book.img_url = file.originalname;
-        console.log(book)
+        book.img_url = newFileName;
+        console.log(book);
         return (await this.booksService.insert(book)) as BookDto;
       } else {
         return {
@@ -134,8 +134,6 @@ export class BooksController {
       };
     }
   }
-
-  
 
   @Put(':id')
   async update(

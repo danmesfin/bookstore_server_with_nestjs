@@ -6,7 +6,8 @@ export class BookIdDto {
   readonly author: string;
   readonly publisher: string;
   readonly pages: string;
-  img_url: string;
+  readonly price: string;
+  readonly img_url: string;
   readonly year: string;
   readonly status: boolean;
 }
