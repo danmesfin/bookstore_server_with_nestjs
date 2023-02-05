@@ -67,10 +67,6 @@ export class UsersController {
   async loginUser(@Body() data: LoginUserDTO) {
     const { email, password } = data;
 
-    const { email, password } = data;
-
-    console.log(data, 'data');
-
     const user = await await this.usersService.findByEmail(email);
 
     console.log('Before Comparing');

@@ -8,11 +8,11 @@ export class BookDto {
   readonly price: string;
   img_url: string;
   readonly year: string;
-  readonly status: boolean;
+  readonly status: string;
 }
 
 /*
-CREATE TABLE users (
+CREATE TABLE books (
       ID int NOT NULL AUTO_INCREMENT,
       title varchar(255),
       genre varchar(255),
@@ -22,7 +22,8 @@ CREATE TABLE users (
       pages varchar(255),
       img_url varchar(255),
       year varchar(255),
-      status boolean,
+      status varchar(255),
+      price varchar(255),
       PRIMARY KEY (ID)
  );
 
