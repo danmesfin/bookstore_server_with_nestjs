@@ -67,19 +67,15 @@ export class UsersController {
   async loginUser(@Body() data: LoginUserDTO) {
     const { email, password } = data;
 
-<<<<<<< HEAD
+    const { email, password } = data;
+
+    console.log(data, 'data');
+
     const user = await await this.usersService.findByEmail(email);
-=======
-    const {email, password} = data;
 
-    console.log(data, "data");
-
-    const user = await (await this.usersService.findByEmail(email));
->>>>>>> 51e19258230a966eda050bc459bbeb6cdf4084e5
-
-    console.log("Before Comparing")
+    console.log('Before Comparing');
     const passwordMatch = await bcrypt.compare(password, user.password);
-    console.log("After Comparing")
+    console.log('After Comparing');
 
     if (passwordMatch) {
       const payload = {
