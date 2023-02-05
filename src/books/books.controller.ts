@@ -33,8 +33,6 @@ export const multerConfig = {
   dest: './public/images',
 };
 
-let fileName="";
-
 export const multerOptions = {
   limits: {
     fileSize: 100023,
@@ -158,7 +156,7 @@ export class BooksController {
 
       if (user) {
         const oldBook = await this.booksService.findById(params.id);
-        updatedBook.img_url = newFileName;
+        updatedBook.img_url = newFileName ? newFileName : oldBook.img_url;
         return await this.booksService.update(oldBook, updatedBook);
       } else {
         return {
